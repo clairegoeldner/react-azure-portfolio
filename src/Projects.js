@@ -1,4 +1,23 @@
-export function Projects({projects}) {
+import { useEffect, useState } from "react";
+
+export function Projects() {
+    let [projects, setProjects] = useState(null);
+    useEffect(() => {
+        fetch("https://oswd-cg.azurewebsites.net/api/portfolio/projects")
+            .then(response => response.json())
+            .then(json => setProjects(json.payload));
+    }, []);
+
+    if (!projects) {
+        return (
+            <section className="center">
+                <article>
+                    <h1>Loading...</h1>
+                </article>
+            </section>
+        );
+    }
+
     const categories = projects.map(project => project.category).filter((category, index, array) => index === array.indexOf(category));
 
     return (
